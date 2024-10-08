@@ -29,42 +29,48 @@ export const ArticleParamsForm = ({
 	articleState,
 	setArticleState,
 }: ArticleParamsFormProps) => {
-	const [isOpen, setIsOpen] = useState(false);
+	const [isMenuOpen, setIsMenuOpen] = useState(false);
 	const [selectState, setSelectState] = useState(articleState);
-	const rootRef = useRef<HTMLDivElement>(null);
+	const ref = useRef<HTMLDivElement>(null);
 
 	const selectHandler = (key: keyof ArticleStateType, value: OptionType) => {
 		setSelectState((prevState) => ({ ...prevState, [key]: value }));
 	};
 
-	const formResetHandler = (evt: SyntheticEvent) => {
+	const resetFormHandler = (evt: SyntheticEvent) => {
 		evt.preventDefault();
 		setArticleState(defaultArticleState);
 		setSelectState(defaultArticleState);
 	};
 
-	const formSubmitHandler = (evt: SyntheticEvent) => {
+	const submitFormHandler = (evt: SyntheticEvent) => {
 		evt.preventDefault();
 		setArticleState(selectState);
 	};
 
-	useOutsideClickClose({ isOpen, rootRef, onChange: setIsOpen });
+	useOutsideClickClose({
+		isOpen: isMenuOpen,
+		rootRef: ref,
+		onChange: setIsMenuOpen,
+	});
 
 	return (
-		<div ref={rootRef}>
+		<div ref={ref}>
 			<ArrowButton
-				isOpen={isOpen}
+				isOpen={isMenuOpen}
 				onClick={() => {
-					setIsOpen(!isOpen);
+					setIsMenuOpen(!isMenuOpen);
 					setSelectState(articleState);
 				}}
 			/>
 			<aside
-				className={clsx(styles.container, { [styles.container_open]: isOpen })}>
+				className={clsx(styles.container, {
+					[styles.container_open]: isMenuOpen,
+				})}>
 				<form
 					className={styles.form}
-					onSubmit={formSubmitHandler}
-					onReset={formResetHandler}>
+					onSubmit={submitFormHandler}
+					onReset={resetFormHandler}>
 					<Text size={31} weight={800} uppercase family='open-sans'>
 						задайте параметры
 					</Text>
