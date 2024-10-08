@@ -25,6 +25,7 @@ type ArticleParamsFormProps = {
 	setArticleState(state: ArticleStateType): void;
 };
 
+//Для коммита
 export const ArticleParamsForm = ({
 	articleState,
 	setArticleState,
